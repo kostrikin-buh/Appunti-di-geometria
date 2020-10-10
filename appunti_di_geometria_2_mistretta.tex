@@ -1,0 +1,813 @@
+% appunti_di_geometria_2_mistretta.tex
+
+% martedì 06 ottobre 2020
+
+% *****************************************************************************
+% il preambolo inizia qui
+% *****************************************************************************
+\documentclass[a4paper]{amsproc}
+
+\usepackage[T1]{fontenc}
+
+% le impostazioni relative ai fonts vanno qui sotto
+% \usepackage{palatino}
+% concrete style
+% ?
+
+\usepackage[utf8]{inputenc}
+
+% pkgs e setup lingue
+\usepackage[greek.ancient, latin.classic, english, italian]{babel}
+\newcommand{\en}[1]{\foreignlanguage{english}{\em #1}}
+\newcommand{\lat}[1]{\foreignlanguage{latin}{\em #1}}
+\newcommand{\gr}{\foreignlanguage{greek}}
+
+% pkgs e setup grafica
+\usepackage[babel=true]{microtype}
+% \usepackage[margin=1.6in]{geometry}
+
+% pkgs e setup tabelle e immagini
+\usepackage{graphicx}
+
+\usepackage{caption}
+\captionsetup{tableposition=top, figureposition=bottom, font=small}
+
+\usepackage{subfig}
+
+% pkgs vari
+% \indentfirst? :c
+\usepackage{enumerate}
+\usepackage{epigraph}
+\usepackage{lipsum}
+% \usepackage[toc,page]{appendix}
+\usepackage{pdfpages} % per importare documetni pdf
+\usepackage{todonotes}
+
+% pkgs e setup bibliografia
+\usepackage[autostyle, italian=guillemets]{csquotes}
+\usepackage[style=alphabetic, backend=biber]{biblatex} % ([Ma 14]), biber
+\addbibresource{../../bibliografia/bibliografia.bib}
+
+% pkgs matematica
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{mathrsfs} % per \mathscr
+
+% enunciati matematici
+\theoremstyle{plain}
+\newtheorem{prp}{Proposizione}[section]
+\newtheorem{fatto}[prp]{Fatto}
+\newtheorem{lemma}[prp]{Lemma}
+\newtheorem{thm}[prp]{Teorema}
+\newtheorem{coroll}[prp]{Corollario}
+
+\theoremstyle{definition}
+\newtheorem{assioma}[prp]{Assioma}
+\newtheorem{dfn}[prp]{Definizione}
+
+\theoremstyle{remark}
+\newtheorem*{oss}{Osservazione}
+\newtheorem{esempio}[prp]{Esempio}
+\newtheorem{esercizio}{Esercizio}[section]
+
+% pkgs per riferimenti
+% dovrebbero sempre stare qui e in questo preciso ordine
+\usepackage[italian]{varioref} % per referencing di oggetti "lontani"
+\usepackage[colorlinks]{hyperref} % colorlinks, hidelinks
+\usepackage[italian]{cleveref} % per referencing di oggetti "vicini"
+
+% pkgs e setup di tikz
+\usepackage{tikz}
+\usetikzlibrary{cd} % tikz-cd
+\usetikzlibrary{babel}
+
+% macros di tikz
+% nope
+
+% matematica definita dall'utente
+% vale:
+% \operatorname è una versione bella di \mathop
+% \DeclareMathOperator è un wrapper per \operatorname
+% \mathbin è per un'operazione binaria come +, ÷, ecc.
+% \mathrel è per una relazione binaria, come aRb, ecc.
+% \DeclarePairedDelimiter (variante asterisco \left e \right)
+
+% teoria degli insiemi
+\newcommand{\power}[1]{2^{#1}}
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+
+% ordini e reticoli
+\DeclareMathOperator{\initialsegment}{\uparrow}
+\DeclareMathOperator{\terminalsegment}{\downarrow}
+
+% abstract nonsense
+\newcommand{\nt}{\Rightarrow}
+\renewcommand{\Im}[1]{\operatorname{Im}{#1}}
+\DeclareMathOperator{\coim}{coim}
+\renewcommand{\ker}{\mathrel{\operatorname{ker}}} % "ker piccolo" è una relazione
+\DeclareMathOperator{\Ker}{Ker} % "ker grande" è il la fibra dello zero
+\DeclareMathOperator{\coker}{coker}
+% \DeclareMathOperator{\hom}{hom}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+\DeclareMathOperator{\ob}{ob}
+% \DeclareMathOperator{\ar}{ar} % ar non è usato
+\DeclareMathOperator{\mor}{mor} % è usato mor per denotare la collezione dei morfismi
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\newcommand{\cat}[1]{\mathit{#1}}
+\newcommand{\delooping}{\mathbf B}
+\newcommand{\op}{\textup{op}}
+
+% nomi di categorie
+\newcommand{\Cat}{\cat{Cat}}
+\newcommand{\CAT}{\cat{CAT}}
+\newcommand{\Set}{\cat{Set}}
+\newcommand{\Top}{\cat{Top}}
+\newcommand{\Group}{\cat{Group}}
+\newcommand{\Ab}{\cat{Ab}}
+\newcommand{\Ring}{\cat{Ring}} % anelli unitari
+\newcommand{\Rng}{\cat{Rng}} % anelli non necessariamente unitari
+\newcommand{\Field}{\cat{Field}}
+\newcommand{\lMod}[1]{\prescript{}{#1}{\cat{Mod}}}
+\newcommand{\Modr}[1]{\cat{Mod}_{#1}}
+\newcommand{\Vect}{\cat{Vect}}
+\newcommand{\Poset}{\cat{Poset}}
+\newcommand{\Matrix}{\cat{Matrix}}
+
+% teoria dei gruppi, anelli
+\newcommand{\normal}{\mathrel{\trianglelefteq}} % da rivedere
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\divides}{\mid}
+\newcommand{\ndivides}{\nmid}
+
+% algebra lineare
+\DeclareMathOperator{\Gr}{\mathfrak{Gr}} % la grassmaniamna di uno spazio
+\DeclarePairedDelimiter{\cl}{\langle}{\rangle}
+% \DeclareMathOperator{\dim}{dim}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\nullity}{nullity}
+\DeclareMathOperator{\Sol}{Sol}
+\newcommand{\Mat}{\mathrm{M}}
+\newcommand{\pt}[1]{\left(\begin{smallmatrix}#1\end{smallmatrix}\right)}
+\DeclareMathOperator{\Bilin}{Bilin}
+\DeclareMathOperator{\Sym}{Sym}
+
+% topologia
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\interior}[1]{{\kern0pt#1}^{{\circ}}}
+\newcommand{\boundary}[1]{\partial{#1}}
+\DeclareMathOperator{\Omeo}{Omeo}
+
+% analisi
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\fractional}{\{}{\}}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}} % mathop{} puts two thin spaces, and \! gets rid of one of those
+
+
+% numeri complessi
+\let\ImPart\Im
+\let\RePart\Re 
+\newcommand{\conj}[1]{\overline{#1}}
+
+% Casi particolari tanto speciali da meritare un nome
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\SL}{\mathrm{SL}}
+\newcommand{\OL}{\mathrm{O}}
+\newcommand{\SO}{\mathrm{SO}}
+
+% % insiemi numerici (rich man)
+% \newcommand{\NN}{\mathbf N}
+% \newcommand{\ZZ}{\mathbf Z}
+% \newcommand{\QQ}{\mathbf Q}
+% \newcommand{\RR}{\mathbf R}
+% \newcommand{\extRR}{\widetilde\RR} % reali estesi
+% \newcommand{\CC}{\mathbf C}
+% \newcommand{\extCC}{\widetilde\CC} % complessi con punto all'infinito
+% \newcommand{\HH}{\mathbf H}
+
+% insiemi numerici (poor man)
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\II}{\mathbb I} % irrazionali
+\newcommand{\extRR}{\widetilde\RR} % reali estesi
+\newcommand{\CC}{\mathbb C}
+\newcommand{\extCC}{\widetilde\CC} % complessi con punto all'infinito
+\newcommand{\HH}{\mathbb H}
+
+% comandi generali definiti dall'utente
+% varianti delle lettere greche
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\theta}{\vartheta}
+
+% alia (devo organizzare questa sezione)
+\newcommand{\omissis}{[\textellipsis\unkern]}
+
+% override dello stile di \paragraph (grassetto, e non so cos'altro)
+\makeatletter
+\def\paragraph{\@startsection{paragraph}{4}%
+  \z@\z@{-\fontdimen2\font}%
+  {\normalfont\bfseries}}
+\makeatother
+
+% *****************************************************************************
+% il documento inizia qui
+% *****************************************************************************
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vfill
+  {\Large\bfseries Appunti delle lezioni di Geometria 2\par}
+  \vspace{.6cm}
+  %\vfill
+  {\bfseries Marco Vianello\par}
+  \vspace{.2cm}
+  {\bfseries Università degli Studi di Padova\par}
+  \vspace{.2cm}
+  {\bfseries a.a.\ 2020/21\par}
+  % \vfill
+  % \includegraphics[width=.80\textwidth]{immagini/klein}
+  \vfill
+  {\small\bfseries ultima compilazione: \texttt{\today}\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+% toc
+\tableofcontents
+\clearpage
+
+% preface
+
+% section*
+\section*{Prefazione}
+\lipsum[1]
+\smallskip
+
+\paragraph{Risorse}
+I testi consigliati per il corso sono~\cite{sernesi2000geometria,sernesi2019geometria}. Non li possiedo, e non credo che avrò intenzione di utilizzarli. Per quello che riuscirò a mettere in queste note, credo mi baserò (non in ordine): sulle lezioni, per il programma generale; su~\cite{candilera2011algebra} e~\cite{barsotti1970appunti}, per la parte di geometria elementare (dalle forme bilineari a quanto sarò in grado di riportare di geometria proiettiva); su~\cite{suetin1997linear}, a volte, quando sentirò il bisogno di farmi del male. Prenderò principalmente da~\cite{manetti2014topologia} per quanto riguarda la parte di topologia; non è detto che non consulterò gli appunti di M.\ Cailotto.
+\smallskip
+
+\paragraph{Che cosa manca da fare}
+\todo[inline]{Distinguere più chiaramente il caso finito-dimensionale da quello $ \infty $-dimensionale}
+
+\todo[inline]{Studiare meglio la questione delle forme bilineari alternanti/simmetriche}
+
+\todo[inline]{Trovare una notazione più decente per la trasposta di una matrice}
+
+\todo[inline]{Scrivere qualche dimostrazione in più}
+\smallskip
+\clearpage
+
+\pagenumbering{arabic}
+
+% section
+\section{Applicazioni bilineari}
+Per il momento ci occupiamo solo di applicazioni $ 2 $-lineari verso il campo di definizione.
+
+Dato uno spazio $ V $ sul campo $ k $, chiamiamo \emph{forma} bilineare su $ V $ un'applicazione $ 2 $-lineare del prodotto $ V\times V $ in $ k $ (si noti l'analogia con le \emph{forme} o \emph{funzionali} lineari dell'anno scorso).
+
+Diciamo che una forma bilineare $ \beta\colon V\times V\to k $:
+\begin{enumerate}[(i)]
+\item è \emph{simmetrica} se per ogni $ v,w\in V $ è $ \beta(v,w) = \beta(w,v) $;
+\item è \emph{antisimmetrica} se per ogni $ v,w\in V $ vale $ \beta(v,w) = -\beta(w,v) $;
+\item è \emph{alternante} se $ \beta(v,v) = 0 $ per ogni $ v\in V $.
+\end{enumerate}
+
+Osserviamo che tutte le forme bilineari alternanti sono antisimmetriche. Lo stesso accade nel contesto $ n $-lineare, ma in questo caso la validità della proposizione inversa è legata alla caratteristica del campo, che deve necessariamente essere diversa da $ 2 $.
+
+Un esempio inutile di forma bilineare è il seguente.
+
+\begin{esempio}
+  Sia $ A = \left(a_{ij}\right)_{ij} $ una matrice $ m\times n $ a coefficienti nel campo $ k $. La (anti)simmetricità della forma bilineare $ \beta\colon k^n\times k^n\to k^n $ definita ponendo
+  \[
+    \beta\colon(x,y)\mapsto x^\intercal Ay
+  \]
+  dipende solo dalla (anti)simmetricità della matrice $ A $.
+\end{esempio}
+
+Siano dunque $ V $, $ W $ due spazi vettoriali. Notiamo innanzitutto che anche l'insieme $ \Bilin_k(V\times W,k) $ delle applicazioni $ k $-bilineari $ V\times W\to k $ indossa una naturale struttura di spazio vettoriale (dove le operazioni di addizione e prodotto per scalare sono definite \en{pointwise} sulle applicazioni).
+
+Ci chiediamo che relazione ci sia tra lo spazio $ \Bilin_k(V\times W,k) $ e un più umile spazio di omomorfismi.
+
+Sia $ \beta\colon V\times W\to k $ un'applicazione bilineare. A $ \beta $ è possibile associare due applicazioni lineari
+\[
+  \begin{aligned}
+    \beta_1\colon V &\to W^* = \Hom_k(W,k)\\
+    v &\mapsto\beta(v,{-})
+  \end{aligned}
+  \qquad
+  \begin{aligned}
+    \beta_2\colon W &\to V^* = \Hom_k(V,k)\\
+    w &\mapsto\beta({-},w)
+  \end{aligned}
+\]
+e di contro, date due applicazioni bilineari $ \beta_1\colon V\to W^* $ e $ \beta_2\colon W\to V^* $, possiamo definire indifferentemente un'applicazione bilineare $ \beta\colon V\times W\to k $  mappando la coppia di un $ v\in V $ e di un $ w\in W $ in $ \left(\beta_1(v)\right)(w) $ o in $ \left(\beta_2(w)\right)(v) $. Ciò dimostra la seguente, notevole.
+
+\begin{prp}
+  Gli spazi $ \Bilin_k(V\times W,k) $ e $ \Hom_k(V,W^*) $ sono canonicamente isomorfi (e lo stesso vale per $ \Bilin_k(W\times V,k) $ e $ \Hom_k(W,V^*) $).
+\end{prp}
+
+In simboli, gli isomorfismi sono:
+\[
+  \begin{aligned}
+    \Bilin_k(V\times W,k)\cong\Hom_k(V,\Hom(W,k))\\
+    \Bilin_k(W\times V,k)\cong\Hom_k(W,\Hom(V,k))
+  \end{aligned}
+\]
+
+In dimensione finita vale una proprietà in più.
+
+\begin{prp}
+  Se lo spazio $ V $ è finito-dimensionale, le applicazioni $ \beta_1 $ e $ \beta_2 $ sono l'una la trasposta dell'altra.
+\end{prp}
+
+\todo[inline]{Che cosa succede in dimensione infinita?}
+
+Continuando con le definizioni, sia ora $ \beta\colon V\times W\to k $ un'applicazione bilineare. Diciamo che
+\begin{enumerate}[(i)]
+\item l'applicazione $ \beta $ è \emph{non degenere a sinistra} se il nucleo $ \Ker\beta_1 $ è nullo;
+\item l'applicazione $ \beta $ è \emph{non degenere a destra} se il nucleo $ \Ker\beta_2 $ è nullo;
+\end{enumerate}
+dove $ \beta_1 $ e $ \beta_2 $ sono le applicazioni definite poco più su.
+
+In altre parole, vale che
+\begin{enumerate}[(i)]
+\item la mappa $ \beta $ è degenere a sinistra se per qualche $ v_0\in V $ vale $ \beta(v_0,w) = 0 $ per ogni $ w\in W $;
+\item eccetera.
+\end{enumerate}
+
+Ovviamente, diremo che l'applicazione $ \beta $ è \emph{non degenere} quando lo sia contemporaneamente a sinistra e a destra.
+
+\begin{esempio}
+  Per non impazzire, ché è tardi, poniamo $ W = V^*$. Consideriamo l'applicazione lineare $ \beta_2\colon W\to V^* $ data dall'identità di $ V^* $. L'applicazione bilineare $ \beta\colon V^*\to V $ canonicamente associata a $ \beta_2 $ è la dualità canonica tra $ V $ e il suo duale. Infatti, abbiamo $ \beta(\xi,v) = \left(\beta_2(\xi)\right)(v) $ per ogni $ \xi\in V^* $ e $ v\in V $. Evidentemente, la dualità canonica è un'applicazione bilineare non degenere.
+\end{esempio}
+
+\begin{prp}
+  La forma bilineare $ \beta $ su $ V $ è simmetrica se e solo se $ \beta_1 = \beta_2 $. Analogamente, $ \beta $ è antisimmetrica se e solo se $ \beta_1 = -\beta_2 $.
+\end{prp}
+
+Il collegamento di tutto ciò con le matrici (anti)simmetriche è esplicitato poche righe più sotto.
+
+\begin{prp}
+  Sia $ \beta $ una forma su $ V $. Se $ V $ ha dimensione finita, le seguenti affermazioni sono equivalenti:
+  \begin{enumerate}[(i)]
+  \item $ \beta $ è non degenere a sinistra;
+  \item $ \beta $ è non degenere a destra;
+  \item $ \beta_1 $ è un isomorfismo;
+  \item $ \beta_2 $ è un isomorfismo;
+  \end{enumerate}
+\end{prp}
+
+Questo \en{trick} sarà utile in seguito.
+\smallskip
+
+\paragraph{Matrici e forme bilineari}
+Sia $ V $ un $ k $-spazio di dimensione $ n $. Data una base $ \mathcal V = \left\{v_1,\dots,v_n\right\} $ di $ V $. Definiamo la \emph{matrice associata} alla forma bilineare $ \beta\colon V\times V\to k $ nella base $ \mathcal V $ come la matrice $ \left(\beta(v_i,v_j)\right)_{\substack{1\leqq i\leqq n\\1\leqq j\leqq n}} $ avente per entrata $ (i,j) $-esima l'immagine di $ \beta $ calcolata sulla coppia di vettori della base $ (v_i,v_j) $.
+
+Al contrario, data la matrice $ \left(a_{ij}\right)_{\substack{1\leqq i\leqq n\\1\leqq j\leqq n}} $, possiamo definire una forma bilineare su $ V $ mappando i vettori $ v $ e $ w $ che rispetto alla base $ \mathcal V $ si scrivono come $ v = \sum_{i = 1}^nx_iv_i $ e $ \sum_{i = 1}^ny_iv_i $, nello scalare $ x^\intercal Ay $.
+
+\begin{prp}
+  Lo spazio delle forme lineari su $ V $ e lo spazio delle matrici di ordine $ n $ a coefficienti nel campo $ k $ sono isomorfi.
+\end{prp}
+
+Vale la pena chiedersi subito che cosa succederebbe se la base $ \mathcal V $ venisse sostituita da un'altra base $ \mathcal V^\prime = \left\{v_1^\prime,\dots,v_n^\prime\right\} $, più pucciosa.
+
+Consideriamo la matrice $ P\in\GL_n(k) $ di cambiamento di base da $ \mathcal V $ a $ \mathcal V^\prime $\footnote{%
+  Ricordo che $ P $ è esattamente la matrice associata all'identità di $ V $ nelle basi $ \mathcal V $ in partenza e $ \mathcal V^\prime $ in arrivo.}%
+. Dico che la matrice $ A^\prime $ della forma bilineare $ \beta\colon V\times V\to k $ nella nuova base $ \mathcal V^\prime $ è esattamente data dal prodotto $ A^\prime = P^\intercal AP $.
+
+\begin{oss}
+  Una volta assegnata alla forma $ \beta\colon V\times V\to k $ la matrice $ A = \left(a_{ij}\right)_{\substack{1\leqq i\leqq n\\1\leqq j\leqq n}} $, ci proponiamo di determinare quali matrici vengano associate alle applicazioni ``curried'' $ \beta_1 $ e $ \beta_2 $. Entrambe sono applicazioni
+  \[
+    \beta_1\colon V\to V^* \qquad \beta_2\colon V\to V^*
+  \]
+  quindi ha senso considerare in partenza e in arrivo rispettivamente la base $ \mathcal V $ e la sua duale $ \mathcal V^* $. Dico che a $ \beta_1 $ e $ \beta_2 $ sono rispettivamente associate le matrici
+  \[
+    A_1 = A^\intercal \qquad A_2 = A
+  \]
+  \todo[inline]{Lavora questa parte}
+\end{oss}
+
+% Possiamo dimostrare la seguente con la \en{machinery} matriciale.
+
+% \begin{prp}
+%   In caratteristica non $ 2 $, ogni forma bilineare si scrive come somma di una forma bilineare simmetrica e di una forma bilineare antisimmetrica.
+% \end{prp}
+% \begin{proof}
+%   Se la caratteristica di $ k $ è diversa da $ 2 $, ogni matrice $ A $ di ordine $ n $ si scrive come somma
+%   \[
+%     \textstyle A = \frac12(A + A^\intercal) + \frac12(A - A^\intercal)
+%   \]
+%   di una matrice simmetrica e di una matrice antisimmetrica. Allora, una forma bilineare $ \beta\colon V\times V\to k $ di matrice $ A $ potrà essere scritta come somma 
+% \end{proof}
+
+In generale possiamo scrivere una matrice $ A\in\Mat_n(k) $ di ordine $ n $ a coefficienti in un campo $ k $ di caratteristica diversa da $ 2 $ come somma
+\[
+  \textstyle A = \frac12(A + A^\intercal) + \frac12(A - A^\intercal)
+\]
+di una matrice simmetrica e di una matrice antisimmetrica.
+
+Allora, possiamo scrivere la forma bilineare $ \beta\colon V\times V\to k $ su uno spazio $ V $ di dimensione finita come somma 
+\todo[inline]{Continua\dots}
+
+\begin{prp}
+  In caratteristica non $ 2 $, ogni forma bilineare simmetrica si scrive come somma di una forma bilineare simmetrica e di una forme bilineare antisimmetrica.
+\end{prp}
+\begin{proof}
+  Data la forma $ \beta\colon V\times V\to k $ in ovvie notazioni, possiamo definire due forme
+  \[
+    \begin{aligned}
+      \sigma\colon V\times V &\to k\\
+      (v, w) &\mapsto\beta(v,w) + \beta(w,v)
+    \end{aligned}
+    \qquad%
+    \begin{aligned}
+      \omega\colon V\times V &\to k\\
+      (v, w) &\mapsto\beta(v,w) - \beta(w,v)
+    \end{aligned}
+  \]
+  e quindi scrivere $ \beta $ come somma
+  \[
+    \beta = \frac12\sigma + \frac12\omega
+  \]
+\end{proof}
+
+Notato dunque che una forma contemporaneamente simmetrica e antisimmetrica deve necessariamente essere la forma nulla, la precedente dà una decomposizione di $ \Bilin(V\times V,k) $ nella somma diretta
+\[
+  \Bilin_k(V\times V,k) = \Sym_k(V\times V,k)\oplus\Lambda_k^2(V)
+\]
+degli spazi $ \Sym(V\times V,k) $ delle forme bilineari simmetriche $ V\times V\to k $ e $ \Lambda_k^2(V) $ delle forme $ 2 $-lineari alternanti $ V\times V\to k $.
+
+\begin{esercizio}
+  Questa decomposizione ha una corrispondente nello spazio $ \Hom_k(V,\Hom(V,k)) $?
+\end{esercizio}
+
+Facciamo un esercizio\dots
+
+\begin{esercizio}
+  Sia $ \beta\colon\RR^4\times\RR^4\to\RR^4 $ la forma bilineare definita da
+  \[
+    \beta\colon\left(\pt{x_1\\\dots\\x_4},\pt{y_1\\\dots\\y_4}\right)\mapsto x_1y_2 + 2x_2y_4 + x_3y_3
+  \]
+  Ci proponiamo di:
+  \begin{enumerate}
+  \item determinare la matrice di $ \beta $ rispetto alla base canonica $ \mathcal E_4 = \left\{e_1,\dots,e_4\right\} $;
+  \item verificare che $ \beta $ è degenere;
+  \item determinare un $ x_0\in\RR^4 $ (un $ y_0\in\RR^4 $) tale che per ogni $ y\in\RR^4 $ (per ogni $ x\in\RR^4 $) si abbia $ \beta(x_0,y) = 0 $ (sia $ \beta(x,y_0) = 0 $);
+  \item determinare la matrice di $ \beta $ rispetto alla base $ \mathcal V $ data dai vettori
+    \[
+      v_1 = e_1\quad v_2 = e_4 - e_1\quad v_3 = e_1 - e_2\quad v_4 = e_4 - e_3
+    \]
+  \end{enumerate}
+\end{esercizio}
+\begin{proof}[Svolgimento]
+  \begin{enumerate}
+  \item Troviamo la matrice $ A = \left(a_{ij}\right)_{i,j = 1,\dots,4} $ di $ \beta $ rispetto a $ \mathcal E_4 $ per brute-force. Abbiamo allora
+  \[
+    A = %
+    \left(%
+      \begin{smallmatrix}
+        0 & 1 & 0 & 0\\
+        0 & 0 & 0 & -2\\
+        0 & 0 & 1 & 0\\
+        0 & 0 & 0 & 0
+      \end{smallmatrix}
+    \right)
+  \]
+\item Sappiamo che, in dimensione finita, essere degenere a sinistra (destra) è equivalente ad avere la prima (seconda) curried function biiettiva. Per verificare che la forma $ \beta $ è degenere, dunque, è sufficiente osservare le matrici delle lineari $ \beta_1 $ e $ \beta_2 $, che conosciamo.
+\item Si tratta semplicemente di risolvere il sistema omogeneo $ \beta_1(x_0) = 0 $, ed è sufficiente risolvere il sistema omogeneo eccetera eccetera.
+\item È banale.
+\end{enumerate}
+\end{proof}
+\smallskip
+
+\paragraph{Ortogonalità}
+Fissiamo un campo, $ k $, di caratteristica diversa da $2 $, e restringiamoci al caso di spazi di dimensione finita. Fissiamo anche uno spazio $ V $, con una forma bilineare simmetrica $ \beta\colon V\times V\to k $.
+
+\begin{dfn}
+  Siano $ v,w\in V $ due vettori di $ V $. Diciamo che $ v $ e $ w $ sono \emph{ortogonali rispetto a $ \beta $}, e scriviamo $ v\perp w $, se $ \beta(v,w) = 0 $.
+\end{dfn}
+
+D'ora in poi sottintenderemo rispetto a quale forma le cose sono ``cose'' (e quindi diremo semplicemente ``ortogonali'', in questo caso).
+
+\begin{dfn}
+  Dato un sottoinsieme $ S $ di $ V $, definiamo l'\emph{ortogonale} (rispetto a $ beta $) di $ S $ come l'insieme $ S^\perp $ di tutti i vettori $ w\in V $ tali che $ \beta(v,w) = 0 $ per ogni $ v\in S $.
+\end{dfn}
+
+È evidente che $ S^\perp $ è un sottospazio vettoriale di $ V $.
+
+Premettendo che denoteremo con $ v^\perp $ l'ortogonale del singoletto $ \{v\} $, per ogni vettore $ v $ dello spazio $ V $, enunciamo le seguenti proprietà:
+\begin{enumerate}[(i)]
+\item l'ortogonale di $ 0 $ è tutto lo spazio $ V $;
+\item per ogni vettore $ v $, è $ v^\perp = {\cl v}^\perp $ (in altre parole, i vettori ortogonali a un vettore dato sono una ``retta passante per l'origine'').
+\item se la forma $ \beta $ è non degenere, il ``doppio'' ortogonale $ \left(S^\perp\right)^\perp $ di un sottoinsieme di $ V $ è esattamente il sottospazio $ \cl S $ generato da $ S $ (quindi, se $ S $ è un sottospazio di $ V $, è esattamente $ \left(S^\perp\right)^\perp = S $).
+\end{enumerate}
+
+\begin{dfn}
+  Chiamiamo \emph{radicale} dello spazio $ V $ l'ortogonale $ V^\perp $.
+\end{dfn}
+
+La forma bilineare $ \beta $ è non degenere se e solo se il radicale di $ V $ è nullo.
+
+Le forme bilineari simmetriche sono in qualche modo una generalizzazione dei prodotti scalari (come vediamo dal buon comportamento della relazione di ortogonalità). Continuiamo l'analogia.
+
+\begin{dfn}
+  Diciamo che un vettore $ v $ dello spazio $ V $ è \emph{($ \beta $-)isotropo} se $ \beta(v,v) = 0 $.
+\end{dfn}
+
+Notiamo che se $ v $ è isotropo, allora anche ogni suo multiplo è isotropo.
+
+\begin{dfn}
+  Chiamiamo \emph{cono isotropo} di $ V $ (rispetto alla forma bilineare simmetrica $ \beta $) l'insieme $ I(V) $ (ma meglio $ I_\beta(V) $) di tutti i vettori ($ \beta $-)isotropi di $ V $.
+\end{dfn}
+
+\begin{esercizio}
+  Consideriamo le forme $ \left(\beta_i\right)_{i = 1,2,3,4} $ sullo spazio reale $ \RR^3 $ date dalle matrici diagonali (rispetto alla base canonica)
+  \[
+    A_1 = \left(%
+      \begin{smallmatrix}
+        1 & {} & {}\\
+        {} & 1 & {}\\
+        {} & {} & -1
+      \end{smallmatrix}
+    \right)
+    \qquad A_2 = %
+    \left(%
+      \begin{smallmatrix}
+        1 & {} & {}\\
+        {} & 1 & {}\\
+        {} & {} & 1
+      \end{smallmatrix}
+    \right)
+    \qquad A_{3,4} = %
+    \left(%
+      \begin{smallmatrix}
+        a & {} & {}\\
+        {} & b & {}\\
+        {} & {} & -1
+      \end{smallmatrix}
+    \right)  
+  \]
+  dove $ a $ e $ b $ sono due numeri reali di segno concorde prima, poi di segno discorde. Rappresentare il cono isotropo di $ \RR^3 $ di questi ragazzi.
+\end{esercizio}
+
+\begin{oss}
+  Più in generale, un \emph{cono} è un sottoinsieme di uno spazio reale che contiene tutti i multipli di ogni suo elemento.
+
+  Vien da sé che tutti i sottospazio sono coni.
+\end{oss}
+
+Ci poniamo alcune domande:
+\begin{enumerate}
+\item se il cono isotropo $ I_\beta(V) $ di $ V $ contiene solo il vettore nullo, la forma è non degenere; tuttavia, l'implicazione inversa non è sempre vera: quando lo è?
+\item il cono isotropo di uno spazio vettoriale complesso può essere è nullo? quando?
+\item quando il cono isotropo non è un sottospazio? Suggerimento: si consideri la forma di matrice $ \left(
+    \begin{smallmatrix}
+      0 & 1\\
+      1 & 0
+    \end{smallmatrix}
+\right) $.
+\end{enumerate}
+
+\todo[inline]{Manca da rispondere}
+
+Notiamo che, dati due sottospazi $ W $ e $ U $ di $ V $, è $ U\subset W^\perp  $ se e solo se $ W\subset U^\perp $. Allora possiamo dare la seguente.
+
+\begin{dfn}
+  Diciamo che due sottospazi $ W $ e $ U $ dello spazio $ V $ sono \emph{ortogonali} se $ U\subset W^\perp $.
+\end{dfn}
+
+\begin{prp}
+  Valgono le proprietà:
+  \begin{enumerate}[(i)]
+  \item se $ U\subset W $, allora $ W^\perp\subset U^\perp $, e se la forma $ \beta $ è non degenere allora ciò è equivalente all'inclusione;
+  \item vale $ (W + U)^\perp = W^\perp\cap U^\perp $;
+  \item se la forma $ \beta $ è non degenere, allora $ (W\cap U)^\perp = W^\perp + U^\perp $;
+  \item (in dimensione finita) vale $ \dim_kW + \dim_kW^\perp = \dim_kV $.
+  \end{enumerate}
+\end{prp}
+
+Ci proponiamo di capire quando, dato il sottospazio $ U\subset V $, si abbia la decomposizione $ V = U\oplus U^\perp $.
+
+Intanto, sicuramente ciò non accade quando $ U = \cl v $, e $ v $ non è un vettore isotropo. In questo caso, un vettore $ w\in V $ si può scrivere come la somma di un multiplo di $ v $ per un multiplo di un vettore ortogonale a $ v $: individuare tale scrittura dà le proiezioni
+\[
+  \begin{tikzcd}
+    \cl v & {\cl v\oplus{\cl v}^\perp}\ar[l, "\pi_1"]\ar[r, "\pi_2"] & {\cl v}^\perp
+  \end{tikzcd}
+\]
+ed è quello che ci proponiamo di fare.
+
+Notiamo che il vettore $ w $ si lascia scomporre come
+\[
+  w = \frac{\beta(w,v)}{\beta(v,v)}v + \Bigl(w - \frac{\beta(w,v)}{\beta(v,v)}v\Bigr)
+\]
+dove
+\[
+  \begin{aligned}
+    \beta\Bigl(v, w - \frac{\beta(w,v)}{\beta(v,v)}v\Bigr) &= \beta(v,w) - \frac{\beta(w,v)}{\beta(v,v)}\beta(v,v)\\
+    &= \beta(v,w) - \beta(w,v)\\
+    &= 0
+  \end{aligned}
+\]
+da cui otteniamo le formule di proiezione lungo $ v $
+\[
+  \begin{aligned}
+    \pi_1\colon\cl v\oplus{\cl v}^\perp&\to\cl v\\
+    w&\mapsto\frac{\beta(w,v)}{\beta(v,v)}v
+  \end{aligned}
+  \qquad%
+  \begin{aligned}
+    \pi_2\colon\cl v\oplus{\cl v}^\perp &\to{\cl v}^\perp\\
+    w &\mapsto w - \frac{\beta(w,v)}{\beta(v,v)}v
+  \end{aligned}
+\]
+Come si può vedere immediatamente guardando i bellissimi disegnini in Ti\textit{k}Z che non ci sono, quando $ \beta $ sia il prodotto scalare canonico nello spazio reale standard le precedenti hanno un'interpretazione geometrica molto naturale.
+
+Sadly, in generale non è vero che uno spazio vettoriale si decompone nella somma diretta di un suo sottospazio con un suo ortogonale.
+
+\begin{prp}
+  Sia $ U $ un sottospazio vettoriale di $ V $. Le seguenti affermazioni sono equivalenti:
+  \begin{enumerate}[(i)]
+  \item vale $ U\cap U^\perp  = 0 $;
+  \item la restrizione della forma bilineare $ \beta $ a $ U\times U $ è non degenere;
+  \item lo spazio $ V $ si decompone nella somma diretta $ V = U\oplus U^\perp $.
+  \end{enumerate}
+\end{prp}
+\smallskip
+
+\paragraph{Ortogonalizzazione à la Gram--Schmidt}
+Similmente a quanto si è già fatto in un istanza di questa teoria, proponiamo il concetto di base ortogonale.
+
+\begin{dfn}
+  Sia $ V $ uno spazio su $ k $, e consideriamo la forma bilineare simmetrica $ \beta\colon V\times V\to k $. Diciamo che una base di $ V $ è \emph{ortogonale} (o \emph{ortogonalizzante}, o \emph{$ \beta $}-diagonalizzante, ecc.), quando $ \beta(v_i,v_j) = \delta_{ij} $ per ogni vettori $ v_i $ e $ v_j $ della base.
+\end{dfn}
+
+In altre parole, se $ \mathcal V = \left\{v_1,\dots,v_n\right\} $ è una base diagonalizzante i vettori di $ \mathcal V $ sono a due a due ortogonali tra loro.
+
+Se $ \mathcal V $ è una base diagonalizzante, la matrice $ A = \left(a_{ij}\right)_{i = 1\dots,n} $ di $ \beta $ rispetto a $ \mathcal V $ avrà entrate $ a_{ij} = \beta(v_iv_j) $ nulle ogniqualvolta $ i\neq j $, e pari a un certo $ d_i\in k $ nella diagonale principale.
+
+È ovvio che tutte le basi sono diagonalizzanti per la forma nulla.
+
+Premettiamo la seguente banalità, che mi ha fatto perdere mezz'ora.
+
+\begin{lemma}
+  Sia $ \beta\neq 0 $. Ogni base diagonalizzante contiene vettori non-isotropi
+\end{lemma}
+\begin{proof}
+  Se così non fosse, la forma sarebbe nulla.
+\end{proof}
+
+Vale il seguente, notevole.
+
+\begin{prp}
+In caratteristica diversa da $ 2 $, ogni forma bilineare simmetrica ammette una base diagonalizzante.
+\end{prp}
+\begin{proof}
+  Notiamo innanzitutto che se $ \beta = 0 $ o $ \dim_kV = 1 $ la tesi segue banalmente. Dimostriamo la cosa per induzione, per $ \dim_kV\geqq 2 $. Se $ \beta\neq 0 $, esistono due vettori $ v $ e $ w $ dello spazio tali che $ \beta(v,w)\neq 0 $. Accade che un vettore tra $ v $, $ w $ e $ v + w $ sia non isotropo, perché la caratteristica del campo è stata supposta diversa da $ 2 $. Chiamiamo il ragazzo isotropo $ v_1 $, e scriviamo lo spazio come $ V = \cl{v_1}\oplus\cl{v_1}^\perp $, dove $ \cl{v_1}^\perp $ è proprio uno spazio di dimensione $ \dim_kV - 1 $. Procedendo così, otteniamo una base.
+  \todo[inline]{Vedere meglio questa cosa}
+\end{proof}
+
+Applichiamo ora un analogo del processo di ortonormalizzazione di Gram--Scmhidt: l'algoritmo di Lagrange.\todo{Lezione del 5 ottobre 2020}
+
+Sia dunque $ V $ un $ k $-spazio, per $ k $ di caratteristica non $ 2 $; sia $ \beta\colon V\times V\to k $ una forma bilineare simmetrica non nulla, e sia $ \mathcal V = \left\{v_1,\dots,v_n\right\} $ una base di $ V $. L'algoritmo è il seguente.
+\begin{enumerate}[1.]
+\item Se $ v_1\in\mathcal V $ non è isotropo, poniamo $ v_i^\prime = v_i $ per ogni $ i = 1,\dots,n $, e $ \mathcal V^\prime = \left\{v_1^\prime,\dots,v_n^\prime\right\} = \mathcal V $. Se $ v_1 $ è isotropo, ma qualche altro elemento della base non lo è, poniamo $ v_1^\prime $ pari al vettore non isotropo $ v_j\in\mathcal V $ di indice $ j $ più basso, e ogni altro $ v_i^\prime $, per $ i\geqq 2 $, pari a $ v_i $ se $ i<j $, o a $ v_{i + 1} $ se $ i\geqq j $; abbiamo solo scambiato l'ordine di vettori, perciò $ \mathcal V^\prime = \left\{v_1^\prime,\dots,v_n^\prime\right\} $ è ancora una base di $ V $. Se tutti i vettori di $ \mathcal V $ sono isotropi, possiamo comunque determinare due vettori di $ \mathcal V $ per i quali $ \beta $ non mappi zero; denotati con $ v_j $ e $ v_k $ i vettori di indici $ j<k $ più bassi tra questi ragazzi, possiamo formare una nuova base $ \mathcal V^\prime $ di $ V $ come segue: poniamo $ v_j^\prime = v_j + v_k $, e per ogni $ i\neq j $ assegnamo $ v_i^\prime = v_i $; riordinati i termini affinché $ v_j^\prime $ diventi il primo vettore della lista, la famiglia $ \mathcal V^\prime = \left\{v_1^\prime,\dots,v_n^\prime\right\} $ è una base il primo vettore della quale non è isotropo.
+\item Sappiamo che $ v_1^\prime\in\mathcal V^\prime $ non è isotropo; poniamo $ v_1^{\prime\prime} = v_1^\prime $, e consideriamo i coefficienti di Fourier $ \alpha_{v_1^\prime}({-})\colon v_j\mapsto \frac{\beta(v_1^\prime,v_j)}{\beta(v_1^\prime,v_1^\prime)} $; poniamo $ v_j^{\prime\prime} = v_j^\prime - \alpha_{v_1^\prime}(v_j^\prime)v_1^\prime $ per ogni $ j>1 $, ottenendo una nuova base $ \mathcal V^{\prime\prime} = \left\{v_1^{\prime\prime},\dots,v_n^{\prime\prime}\right\} $ dove tutti i vettori $ v_j^{\prime\prime} $, per $ j\neq 1 $, sono ortogonali a $ v_1^{\prime\prime} $.\todo{Completare!}
+\end{enumerate}
+
+Proviamo ad applicare il precedente.
+
+\begin{esercizio}
+  Trova una base diagonalizzante per la forma bilineare $ \beta k^3\times k^3\to k^3 $ di matrice
+  \[
+    A =%
+    \left(%
+      \begin{smallmatrix}
+        0 & 1 & -1\\
+        1 & 0 & 2\\
+        -1 & 2 & 0
+      \end{smallmatrix}
+    \right)
+  \]
+  rispetto alla base $ \mathcal E_3 $ canonica.
+\end{esercizio}
+\begin{proof}[Svolgimento]
+  La diagonale di $ A $ è nulla, quindi tutti i vettori di $ \mathcal E_3 $ sono isotropi \footnote{%
+    Ricordo che se $ A = \left(a_{ij}\right)_{i,j = 1,\dots,n} $ è una matrice di ordine $ n $ a coefficienti in $ k $, si può dimostrare così che $ v_i^\intercal A v_j = a_{ij} $, dove $ \mathcal E_n = \left\{v_1,\dots,v_n\right\} $ è la base canonica: sia $ \phi\colon k^n\to k^n $ di matrice $ A $ rispetto alla base canonica; allora, per definizione, sarà $ \phi(v_j) = \pt{a_{1j}\\\cdots\\a_{nj}} $; e, siccome $ v_i^\intercal $ è esattamente la matrice del vettore duale $ v_i^* $ che ``prende la coordinata $ i $-esima sui vettori dello spazio'', abbiamo finito.}%
+  . Siamo in una situazione brutta, nel senso che occorre pasticciare la base $ \mathcal E_3 $ ad ottenere una base migliore $ \mathcal V^\prime $. I due vettori di $ \mathcal E_3 $ con gli indici più bassi $ j<k $ aventi immagine non-nulla per $ \beta $ sono $ v_1 $ e $ v_2 $, e quindi poniamo $ v_1^\prime = v_1 + v_2 $, $ v_2^\prime = v_2 $ e $ v_3^\prime = v_3 $.
+
+  Calcoliamoci la matrice $ A^\prime $ di $ \beta $ rispetto alla nuova base $ \mathcal V = \left\{v_1^\prime,v_2,v_3\right\} $: questo è dannatamente utile, perché i coefficienti $ a_{ij}^\prime $ di $ A^\prime $, come sappiamo, sono esattamente le immagini $ \beta(v_i^\prime,v_j^\prime) $, delle quali necessiteremo al momento di determinare la base $ \mathcal V^{\prime\prime} $ avente $ v_1^{\prime\prime} $ non-isotropo e ogni $ v_j^{\prime\prime} $, per $ j\neq 1 $, ortogonale a $ v_1^{\prime\prime} $. La matrice $ P $ di cambio di base è data come
+    \[
+    P =%
+    \left(%
+      \begin{smallmatrix}
+        1 & 1 & 0\\
+        1 & 1 & 0\\
+        0 & 1 & 1
+      \end{smallmatrix}
+    \right)
+  \] perciò avremo
+  \[
+    A^\prime =%
+    \left(%
+      \begin{smallmatrix}
+        2 & 1 & 1\\
+        1 & 0 & 1\\
+        1 & 2 & 0
+      \end{smallmatrix}
+    \right)
+  \]
+
+  Determiniamo allora la base $ \mathcal V^{\prime\prime} $ dei vettori $ v_1^{\prime\prime} = v_1\prime = v_1 + v_2 $, e $ v_j^{\prime\prime} = v_j^\prime - \alpha_{v_1^\prime}(v_j^\prime)v_1^\prime = v_j^\prime - \frac{\beta(v_1^\prime,v_j^\prime)}{\beta(v_1^\prime,v_1^\prime)}v_1^\prime $, per $ j = 1,2 $. Otteniamo
+  \[
+    \begin{aligned}
+      v_2^{\prime\prime} &= v_2^\prime - \frac{\beta(v_1^\prime,v_2^\prime)}{\beta(v_1^\prime,v_1^\prime)}v_1^\prime\\
+      &= v_2^\prime - \frac12 v_1^\prime
+    \end{aligned}%
+    \qquad%
+    \begin{aligned}
+      v_2^{\prime\prime} &= v_3^\prime - \frac{\beta(v_1^\prime,v_3^\prime)}{\beta(v_1^\prime,v_1^\prime)}v_1^\prime\\
+      &= v_3 - \frac12 v_1
+    \end{aligned}%
+  \]
+  Per lo stesso motivo di prima, determiniamo ancora la matrice $ A^{\prime\prime} $ di $ \beta $ rispetto alla base $ \mathcal V^{\prime\prime} $. Otteniamo
+  \[
+    A^{\prime\prime} =%
+    \left(%
+      \begin{smallmatrix}
+        2 & 0 & 0\\
+        0 & -\frac12 & \frac32\\
+        0 & \frac32 & -\frac12
+      \end{smallmatrix}
+    \right)
+  \]
+  e dunque possiamo procedere a calcolare $ v_i^{\prime\prime\prime} $ per $ i = 1,\dots,3 $.
+\end{proof}
+
+Il risultato risultato precedente sull'esistenza delle basi diagonalizzanti per le forme simmetriche non nulle si rifrasa così.
+
+\begin{prp}
+  In caratteristica diversa da $ 2 $, possiamo esprime la matrice di ogni forma bilineare simmetrica $ \beta $ non nulla come una matrice diagonale.
+\end{prp}
+
+Sappiamo che non tutti i vettori della base diagonalizzante sono isotropi; d'altro canto, non abbiamo modo di essere certi che \emph{tutti} i vettori di una suddetta base non possano essere isotropi.\todo{Manca un controesempio faccio domani}
+
+In generale, possiamo immaginare che la forma bilineare non nulla $ \beta $ abbia, rispetto a una base diagonalizzante $ \mathcal V $ matrice della forma
+\[
+  \left(%
+    \begin{smallmatrix}
+      d_1 & {} & {} & {} & {} & {} & {}\\
+      {} & d_2 & {} & {} & {}& {}& {}\\
+      {} & {} & \ddots & {} & {} & {}& {}\\
+      {} & {} & {} & d_r & {} & {} & {}\\
+      {} & {} & {} & {} & 0 & {} & {}\\
+      {} & {} & {} & {} & {} & \ddots & {}\\
+      {} & {} & {} & {} & {} & {} & 0\\
+    \end{smallmatrix}
+  \right)
+\]
+dove $ d_1,\dots,d_r $ sono elementi di $ k $ non nulli, corrispondenti alle immagini dei vettori non isotropi.
+
+\begin{dfn}
+  Definiamo il \emph{rango} $ \rk\beta $ della forma $ \beta $ come il rango della matrice associata a $ \beta $ in qualche base.
+\end{dfn}
+
+Ovviamente la precedente è una buona definizione: per verificarlo, ecc.
+
+Quell'$ r $ che compare nella matrice precedete è, dunque, esattamente il rango di $ \beta $. In altre parole, vale la seguente.
+
+\begin{prp}
+  Il rango di una forma bilineare simmetrica è uguale al numero di vettori non isotropi in una qualsiasi base diagonalizzante.
+\end{prp}
+
+Ci chiediamo quando possibile descrivere la matrice di $ \beta $ come una matrice a blocchi
+\[
+  \left(%
+    \begin{smallmatrix}
+      1_r & {}\\
+      {} & 0
+    \end{smallmatrix}
+  \right)
+\]
+dove $ 1_r $ è una matrice quadrata avente $ 1 $ solo sulle prime $ r $ entrate diagonali, e $ 0 $ altrove.
+
+Supponiamo che la matrice di $ \beta $ rispetto alla base diagonalizzante $ \mathcal V = \left\{v_1,\dots,v_n\right\} $ sia quella esplicitata sopra, avente $ d_i $s nelle prime $ r $ posizioni di diagonale. Se in $ k $ esistono $ \alpha_i $ tali che $ \alpha_i^2 = d_i $, possiamo porre $ v_i^\prime = 1/\alpha_iv_i $ per $ 1\leqq i\leqq r $ e $ v_i^\prime = v_i $ per $ i<r $ dà una base diagonalizzante rispetto alla quale $ \beta $ è della forma desiderata.
+
+Affinché ciò sia fattibile è ovviamente necessario che il campo $ k $ sia algebricamente chiuso; ossia che, in $ k[X] $, ogni polinomio di grado positivo abbia radice.
+
+\todo[inline]{Sono arrivato al minuto 52}
+
+\clearpage
+\printbibliography[] % headig=bibintoc
+
+\end{document}
