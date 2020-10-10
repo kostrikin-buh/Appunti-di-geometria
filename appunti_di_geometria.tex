@@ -1,0 +1,281 @@
+% appunti_di_geometria_2.tex
+
+% sabato 10 ottobre 2020
+
+% *****************************************************************************
+% il preambolo inizia qui
+% *****************************************************************************
+\documentclass[a4paper]{amsproc}
+
+\usepackage[T1]{fontenc}
+
+% le impostazioni relative ai fonts vanno qui sotto
+% \usepackage{palatino}
+% concrete style
+% ?
+
+\usepackage[utf8]{inputenc}
+
+% pkgs e setup lingue
+\usepackage[greek.ancient, latin.classic, english, italian]{babel}
+\newcommand{\en}[1]{\foreignlanguage{english}{\em #1}}
+\newcommand{\lat}[1]{\foreignlanguage{latin}{\em #1}}
+\newcommand{\gr}{\foreignlanguage{greek}}
+
+% pkgs e setup grafica
+\usepackage[babel=true]{microtype}
+% \usepackage[margin=1.6in]{geometry}
+
+% pkgs e setup tabelle e immagini
+\usepackage{graphicx}
+
+\usepackage{caption}
+\captionsetup{tableposition=top, figureposition=bottom, font=small}
+
+\usepackage{subfig}
+
+% pkgs vari
+% \indentfirst? :c
+\usepackage{enumerate}
+\usepackage{epigraph}
+\usepackage{lipsum}
+% \usepackage[toc,page]{appendix}
+\usepackage{pdfpages} % per importare documetni pdf
+\usepackage{todonotes}
+
+% pkgs e setup bibliografia
+\usepackage[autostyle, italian=guillemets]{csquotes}
+\usepackage[style=alphabetic, backend=biber]{biblatex} % ([Ma 14]), biber
+\addbibresource{../../bibliografia/bibliografia.bib}
+
+% pkgs matematica
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{mathrsfs} % per \mathscr
+
+% enunciati matematici
+\theoremstyle{plain}
+\newtheorem{prp}{Proposizione}[section]
+\newtheorem{fatto}[prp]{Fatto}
+\newtheorem{lemma}[prp]{Lemma}
+\newtheorem{thm}[prp]{Teorema}
+\newtheorem{coroll}[prp]{Corollario}
+
+\theoremstyle{definition}
+\newtheorem{assioma}[prp]{Assioma}
+\newtheorem{dfn}[prp]{Definizione}
+
+\theoremstyle{remark}
+\newtheorem*{oss}{Osservazione}
+\newtheorem{esempio}[prp]{Esempio}
+\newtheorem{esercizio}{Esercizio}[section]
+
+% pkgs per riferimenti
+% dovrebbero sempre stare qui e in questo preciso ordine
+\usepackage[italian]{varioref} % per referencing di oggetti "lontani"
+\usepackage[colorlinks]{hyperref} % colorlinks, hidelinks
+\usepackage[italian]{cleveref} % per referencing di oggetti "vicini"
+
+% pkgs e setup di tikz
+\usepackage{tikz}
+\usetikzlibrary{cd} % tikz-cd
+\usetikzlibrary{babel}
+
+% macros di tikz
+% nope
+
+% matematica definita dall'utente
+% vale:
+% \operatorname è una versione bella di \mathop
+% \DeclareMathOperator è un wrapper per \operatorname
+% \mathbin è per un'operazione binaria come +, ÷, ecc.
+% \mathrel è per una relazione binaria, come aRb, ecc.
+% \DeclarePairedDelimiter (variante asterisco \left e \right)
+
+% teoria degli insiemi
+\newcommand{\power}[1]{2^{#1}}
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+
+% ordini e reticoli
+\DeclareMathOperator{\initialsegment}{\uparrow}
+\DeclareMathOperator{\terminalsegment}{\downarrow}
+
+% abstract nonsense
+\newcommand{\nt}{\Rightarrow}
+\renewcommand{\Im}[1]{\operatorname{Im}{#1}}
+\DeclareMathOperator{\coim}{coim}
+\renewcommand{\ker}{\mathrel{\operatorname{ker}}} % "ker piccolo" è una relazione
+\DeclareMathOperator{\Ker}{Ker} % "ker grande" è il la fibra dello zero
+\DeclareMathOperator{\coker}{coker}
+% \DeclareMathOperator{\hom}{hom}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+\DeclareMathOperator{\ob}{ob}
+% \DeclareMathOperator{\ar}{ar} % ar non è usato
+\DeclareMathOperator{\mor}{mor} % è usato mor per denotare la collezione dei morfismi
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\newcommand{\cat}[1]{\mathit{#1}}
+\newcommand{\delooping}{\mathbf B}
+\newcommand{\op}{\textup{op}}
+
+% nomi di categorie
+\newcommand{\Cat}{\cat{Cat}}
+\newcommand{\CAT}{\cat{CAT}}
+\newcommand{\Set}{\cat{Set}}
+\newcommand{\Top}{\cat{Top}}
+\newcommand{\Group}{\cat{Group}}
+\newcommand{\Ab}{\cat{Ab}}
+\newcommand{\Ring}{\cat{Ring}} % anelli unitari
+\newcommand{\Rng}{\cat{Rng}} % anelli non necessariamente unitari
+\newcommand{\Field}{\cat{Field}}
+\newcommand{\lMod}[1]{\prescript{}{#1}{\cat{Mod}}}
+\newcommand{\Modr}[1]{\cat{Mod}_{#1}}
+\newcommand{\Vect}{\cat{Vect}}
+\newcommand{\Poset}{\cat{Poset}}
+\newcommand{\Matrix}{\cat{Matrix}}
+
+% teoria dei gruppi, anelli
+\newcommand{\normal}{\mathrel{\trianglelefteq}} % da rivedere
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\divides}{\mid}
+\newcommand{\ndivides}{\nmid}
+
+% algebra lineare
+\DeclareMathOperator{\Gr}{\mathfrak{Gr}} % la grassmaniamna di uno spazio
+\DeclarePairedDelimiter{\cl}{\langle}{\rangle}
+% \DeclareMathOperator{\dim}{dim}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\nullity}{nullity}
+\DeclareMathOperator{\Sol}{Sol}
+\newcommand{\Mat}{\mathrm{M}}
+\newcommand{\pt}[1]{\left(\begin{smallmatrix}#1\end{smallmatrix}\right)}
+\DeclareMathOperator{\Bilin}{Bilin}
+\DeclareMathOperator{\Sym}{Sym}
+
+% topologia
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\interior}[1]{{\kern0pt#1}^{{\circ}}}
+\newcommand{\boundary}[1]{\partial{#1}}
+\DeclareMathOperator{\Omeo}{Omeo}
+
+% analisi
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\fractional}{\{}{\}}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}} % mathop{} puts two thin spaces, and \! gets rid of one of those
+
+
+% numeri complessi
+\let\ImPart\Im
+\let\RePart\Re 
+\newcommand{\conj}[1]{\overline{#1}}
+
+% Casi particolari tanto speciali da meritare un nome
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\SL}{\mathrm{SL}}
+\newcommand{\OL}{\mathrm{O}}
+\newcommand{\SO}{\mathrm{SO}}
+
+% % insiemi numerici (rich man)
+% \newcommand{\NN}{\mathbf N}
+% \newcommand{\ZZ}{\mathbf Z}
+% \newcommand{\QQ}{\mathbf Q}
+% \newcommand{\RR}{\mathbf R}
+% \newcommand{\extRR}{\widetilde\RR} % reali estesi
+% \newcommand{\CC}{\mathbf C}
+% \newcommand{\extCC}{\widetilde\CC} % complessi con punto all'infinito
+% \newcommand{\HH}{\mathbf H}
+
+% insiemi numerici (poor man)
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\II}{\mathbb I} % irrazionali
+\newcommand{\extRR}{\widetilde\RR} % reali estesi
+\newcommand{\CC}{\mathbb C}
+\newcommand{\extCC}{\widetilde\CC} % complessi con punto all'infinito
+\newcommand{\HH}{\mathbb H}
+
+% comandi generali definiti dall'utente
+% varianti delle lettere greche
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\theta}{\vartheta}
+
+% alia (devo organizzare questa sezione)
+\newcommand{\omissis}{[\textellipsis\unkern]}
+
+% override dello stile di \paragraph (grassetto, e non so cos'altro)
+\makeatletter
+\def\paragraph{\@startsection{paragraph}{4}%
+  \z@\z@{-\fontdimen2\font}%
+  {\normalfont\bfseries}}
+\makeatother
+
+% *****************************************************************************
+% il documento inizia qui
+% *****************************************************************************
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vfill
+  {\Large\bfseries Appunti di Geoemtria\par}
+  \vspace{.6cm}
+  %\vfill
+  {\bfseries Marco Vianello\par}
+  \vspace{.2cm}
+  {\bfseries Università degli Studi di Padova\par}
+  \vspace{.2cm}
+  {\bfseries a.a.\ 2020/21\par}
+  % \vfill
+  % \includegraphics[width=.80\textwidth]{immagini/klein}
+  \vfill
+  {\small\bfseries ultima compilazione: \texttt{\today}\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+% toc
+\tableofcontents
+\clearpage
+
+% preface
+
+% section*
+\section*{Prefazione}
+\lipsum[1]
+\smallskip
+
+\paragraph{Risorse}
+I testi consigliati per il corso sono~\cite{sernesi2000geometria,sernesi2019geometria}. Non li possiedo, e non credo che avrò intenzione di utilizzarli. Per quello che riuscirò a mettere in queste note, credo mi baserò (non in ordine): sulle lezioni, per il programma generale; su~\cite{candilera2011algebra} e~\cite{barsotti1970appunti}, per la parte di geometria elementare (dalle forme bilineari a quanto sarò in grado di riportare di geometria proiettiva); su~\cite{suetin1997linear}, a volte, quando sentirò il bisogno di farmi del male. Prenderò principalmente da~\cite{manetti2014topologia} per quanto riguarda la parte di topologia; non è detto che non consulterò gli appunti di M.\ Cailotto.
+\smallskip
+
+\paragraph{Che cosa manca da fare}
+\todo[inline]{Distinguere più chiaramente il caso finito-dimensionale da quello $ \infty $-dimensionale}
+
+\todo[inline]{Studiare meglio la questione delle forme bilineari alternanti/simmetriche}
+
+\todo[inline]{Trovare una notazione più decente per la trasposta di una matrice}
+
+\todo[inline]{Scrivere qualche dimostrazione in più}
+\smallskip
+\clearpage
+
+\pagenumbering{arabic}
+
+% document
+
+% section
+\section{Applicazioni bilineari}
+
+\clearpage
+\printbibliography[] % headig=bibintoc
+
+\end{document}
